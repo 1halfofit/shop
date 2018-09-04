@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                       http://www.springframework.org/schema/mvc 
+                       http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+                       http://www.springframework.org/schema/context 
+                       http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+    <!-- 扫描我们控制器的包 -->
+    <context:component-scan base-package="com.bo" use-default-filters="false">
+        <!--这个扫描器 ，只会去加载添加了@Controller 注解的类    不加 也不会报错  会浪费资源   -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <!--静态资源处理   -->
+    <mvc:default-servlet-handler/>
+    <!-- 注解驱动-->
+    <mvc:annotation-driven/>
+
+    <!--  配置自身的转换器 -->
+    <bean id="converterservice" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.bo.converter.DateConverter"></bean>
+                <bean class="com.bo.converter.StringTrimConverter"></bean>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 文件上传的配置 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="500000000"></property>
+    </bean>
+
+
+    <!--视图解析器  -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 配置视图解析中  真正的视图存放位置 -->
+        <property name="prefix" value="/"></property>
+        <property name="suffix" value=".jsp"></property>
+
+    </bean>
+
+</beans>

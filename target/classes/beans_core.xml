@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		                    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+							http://www.springframework.org/schema/context 
+							http://www.springframework.org/schema/context/spring-context-4.3.xsd
+							http://www.springframework.org/schema/aop 
+							http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+							http://www.springframework.org/schema/tx 
+							http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
+	<!--开启spring的注解模式 -->
+	<context:annotation-config></context:annotation-config>
+
+	<!--扫描添加spring注解的包 -->
+	<context:component-scan base-package="com.bo">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<!-- 添加到类上的注解， 不能添加到接口上 @Controller：控制器 @Repository:数据操作层（直接和数据可交互的代码） 
+			@Service:Service类型代码类（服务层的工具类） @Component:当前的类是Java中的一个普通的类 添加了上述注解的类，会被spring容器管理（使用ioc机制） -->
+	</context:component-scan>
+	<!--数据源 载入外部文件 -->
+	<context:property-placeholder
+		location="classpath:dbcp.properties" />
+	<!--数据源最终提供的是数据库的连接对象 因为采用的是C3P0的 数据源 -->
+	<bean name="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- C3P0数据源的工具类提供了连接数据库条件的set方法 所以我们使用di setter 注入方式 -->
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+
+
+	<!-- 整合mybatis部分 -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 加载配置文件 -->
+		<property name="configLocation"
+			value="classpath:mybatis/mybatis_config.xml"></property>
+		<!--引入 分页插件  -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<value>
+							helperDialect=mysql
+							reasonable=true
+							supportMethodsArguments=true
+							params=count=countSql
+							autoRuntimeDialect=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<!--扫描mapper接口 和接口对应的mappper.xml -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.bo.mapper"></property>
+	</bean>
+
+	<!-- 使用AOP进行声明式事务控制 -->
+	<!-- 数据源配置  -->
+	<bean name="dataSourceTransactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!--datasource.DataSourceTransactionManager：中有setDatesource
+			 ref="dataSource"引入当前容器中自已定义的名字是dataSource
+		  -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 事务管理器 -->
+	<tx:advice id="adtx" transaction-manager="dataSourceTransactionManager">
+		<tx:attributes>
+			<!-- 设定通知  -->
+			<tx:method name="save*" isolation="READ_COMMITTED" propagation="REQUIRED"  read-only="false"/>
+			<tx:method name="delete*" isolation="READ_COMMITTED" propagation="REQUIRED"  read-only="false"/>
+			<tx:method name="update*" isolation="READ_COMMITTED" propagation="REQUIRED"  read-only="false"/>
+			<tx:method name="add*" isolation="READ_COMMITTED" propagation="REQUIRED"  read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<!--AOP定义切点表达式   -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.bo.serviceImpl.*.*(..))" id="aa"/>
+		<aop:advisor advice-ref="adtx" pointcut-ref="aa"/>
+	</aop:config>
+
+
+</beans>

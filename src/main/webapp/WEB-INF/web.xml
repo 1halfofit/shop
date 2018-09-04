@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <!--中文乱码-->
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+
+    </filter-mapping>
+    //自动登录的拦截器
+    <filter>
+        <filter-name>AutoFilter</filter-name>
+        <filter-class>com.bo.filter.AutoFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AutoFilter</filter-name>
+        <url-pattern>/login.jsp</url-pattern>
+
+    </filter-mapping>
+    <!--拦截器  拦截页面-->
+    <filter>
+        <filter-name>login</filter-name>
+        <filter-class>com.bo.filter.LoginFilter</filter-class>
+    </filter>
+       <filter-mapping>
+            <filter-name>login</filter-name>
+            <url-pattern>/roder_list.jsp</url-pattern>
+           <url-pattern>/cartinfo</url-pattern>
+           <url-pattern>/addCar</url-pattern>
+           <url-pattern>/ordersshow</url-pattern>
+        </filter-mapping>
+
+    <!--验证码的servlet配置-->
+    <servlet>
+        <servlet-name>code</servlet-name>
+        <servlet-class>com.bo.util.CodeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>code</servlet-name>
+        <url-pattern>/servlet/code</url-pattern>
+    </servlet-mapping>
+    <!--配置spring 的配置文件
+       通过一个监听器   全局的参数配置
+         -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--加载我们指定路径  -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:beans_*.xml</param-value>
+    </context-param>
+
+    <!--配置springmvc的文件初始化  -->
+
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc.xml</param-value>
+        </init-param>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>jump.jsp</welcome-file>
+    </welcome-file-list>
+
+
+</web-app>

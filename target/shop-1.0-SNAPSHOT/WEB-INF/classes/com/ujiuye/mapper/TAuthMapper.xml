@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ujiuye.mapper.TAuthMapper">
+  <resultMap id="BaseResultMap" type="com.ujiuye.bean.TAuth">
+    <id column="authid" jdbcType="INTEGER" property="authid" />
+    <result column="authname" jdbcType="VARCHAR" property="authname" />
+    <result column="authpath" jdbcType="VARCHAR" property="authpath" />
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
+    <result column="authdis" jdbcType="VARCHAR" property="authdis" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="iconcls" jdbcType="VARCHAR" property="iconcls" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    authid, authname, authpath, parentid, authdis, state, iconcls
+  </sql>
+  <select id="selectByExample" parameterType="com.ujiuye.bean.TAuthExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_auth
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_auth
+    where authid = #{authid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_auth
+    where authid = #{authid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ujiuye.bean.TAuthExample">
+    delete from t_auth
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ujiuye.bean.TAuth">
+    insert into t_auth (authid, authname, authpath, 
+      parentid, authdis, state, 
+      iconcls)
+    values (#{authid,jdbcType=INTEGER}, #{authname,jdbcType=VARCHAR}, #{authpath,jdbcType=VARCHAR}, 
+      #{parentid,jdbcType=INTEGER}, #{authdis,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{iconcls,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ujiuye.bean.TAuth">
+    insert into t_auth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="authid != null">
+        authid,
+      </if>
+      <if test="authname != null">
+        authname,
+      </if>
+      <if test="authpath != null">
+        authpath,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="authdis != null">
+        authdis,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="iconcls != null">
+        iconcls,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="authid != null">
+        #{authid,jdbcType=INTEGER},
+      </if>
+      <if test="authname != null">
+        #{authname,jdbcType=VARCHAR},
+      </if>
+      <if test="authpath != null">
+        #{authpath,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="authdis != null">
+        #{authdis,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="iconcls != null">
+        #{iconcls,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ujiuye.bean.TAuthExample" resultType="java.lang.Long">
+    select count(*) from t_auth
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_auth
+    <set>
+      <if test="record.authid != null">
+        authid = #{record.authid,jdbcType=INTEGER},
+      </if>
+      <if test="record.authname != null">
+        authname = #{record.authname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authpath != null">
+        authpath = #{record.authpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentid != null">
+        parentid = #{record.parentid,jdbcType=INTEGER},
+      </if>
+      <if test="record.authdis != null">
+        authdis = #{record.authdis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconcls != null">
+        iconcls = #{record.iconcls,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_auth
+    set authid = #{record.authid,jdbcType=INTEGER},
+      authname = #{record.authname,jdbcType=VARCHAR},
+      authpath = #{record.authpath,jdbcType=VARCHAR},
+      parentid = #{record.parentid,jdbcType=INTEGER},
+      authdis = #{record.authdis,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=VARCHAR},
+      iconcls = #{record.iconcls,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ujiuye.bean.TAuth">
+    update t_auth
+    <set>
+      <if test="authname != null">
+        authname = #{authname,jdbcType=VARCHAR},
+      </if>
+      <if test="authpath != null">
+        authpath = #{authpath,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="authdis != null">
+        authdis = #{authdis,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="iconcls != null">
+        iconcls = #{iconcls,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where authid = #{authid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ujiuye.bean.TAuth">
+    update t_auth
+    set authname = #{authname,jdbcType=VARCHAR},
+      authpath = #{authpath,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      authdis = #{authdis,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      iconcls = #{iconcls,jdbcType=VARCHAR}
+    where authid = #{authid,jdbcType=INTEGER}
+  </update>
+</mapper>

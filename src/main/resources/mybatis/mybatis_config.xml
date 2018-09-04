@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--	原先没有ssm整合之前mybatis的配置
+            环境配置 ：事务(每一个标签select  inset 。。都是 Statment 每一个Statment 都是一个事务) 数据源：将数据源的配置移除
+                其他配置：别名 扫描mapper接口和配置文件(移除)
+            全局配置：缓存  懒加载。。
+            只留下别名  和全局配置
+     -->
+
+    <settings>
+        <!-- 开启延迟加载  -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--关闭立即加载  -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- 开启二级加载 -->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--别名   -->
+    <typeAliases>
+        <package name="com.bo.bean"/>
+    </typeAliases>
+
+</configuration>
