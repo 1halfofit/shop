@@ -1,6 +1,5 @@
 package com.bo.mapper;
 
-import com.bo.bean.Cart;
 import com.bo.bean.User;
 import com.bo.bean.UserExample;
 import java.util.List;
@@ -20,8 +19,6 @@ public interface UserMapper {
     int insertSelective(User record);
     //查询登录信息
     User selectUser(UserVo userVo);
-
-
 
     List<User> selectByExample(UserExample example);
 

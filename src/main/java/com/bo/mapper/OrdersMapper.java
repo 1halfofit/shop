@@ -1,6 +1,5 @@
 package com.bo.mapper;
 
-import com.bo.bean.Orderitem;
 import com.bo.bean.Orders;
 import com.bo.bean.OrdersExample;
 import java.util.List;
@@ -17,7 +16,6 @@ public interface OrdersMapper {
 
     //根据uid查询订单
     List<Orders> selectByUid(String uid);
-
 
     List<Orders> selectByExample(OrdersExample example);
 

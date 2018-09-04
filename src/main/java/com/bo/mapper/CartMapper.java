@@ -22,8 +22,6 @@ public interface CartMapper {
 
     Cart selectByUserId(String uid);
 
-
-
     Cart selectCartandCartItrm(Integer uid);
 
     int updateByExampleSelective(@Param("record") Cart record, @Param("example") CartExample example);

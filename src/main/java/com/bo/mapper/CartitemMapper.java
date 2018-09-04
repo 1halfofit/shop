@@ -1,6 +1,5 @@
 package com.bo.mapper;
 
-import com.bo.bean.Cart;
 import com.bo.bean.CartItrmVo;
 import com.bo.bean.Cartitem;
 import com.bo.bean.CartitemExample;
@@ -25,8 +24,6 @@ public interface CartitemMapper {
     boolean deleteCartitemAll(Integer id);
     //当购物车中商品，生成订单，需要清空购物车
     int dleteInfoByPidAndCid(CartItrmVo vo);
-
-
 
     List<Cartitem> selectByExample(CartitemExample example);
 
