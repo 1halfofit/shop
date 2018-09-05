@@ -1,10 +1,7 @@
 package com.bo.controller;
 
-import com.sun.deploy.net.HttpResponse;
-import com.bo.bean.Cart;
 import com.bo.bean.User;
 import com.bo.bean.UserVo;
-import com.bo.mapper.UserMapper;
 import com.bo.service.CartService;
 import com.bo.service.UserService;
 import com.bo.util.UUIDutil;
